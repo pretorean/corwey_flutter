@@ -1,75 +1,53 @@
+import 'package:corwey_flutter/AuthenticationBloc.dart';
+import 'package:corwey_flutter/LoginBloc.dart';
+import 'package:corwey_flutter/LoginForm.dart';
+import 'package:corwey_flutter/UserRepository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginPageActivity extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  final UserRepository userRepository;
+
+  LoginPage({Key key, @required this.userRepository})
+      : assert(userRepository != null),
+        super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  LoginBloc _loginBloc;
+  AuthenticationBloc _authenticationBloc;
+
+  UserRepository get _userRepository => widget.userRepository;
+
+  @override
+  void initState() {
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    _loginBloc = LoginBloc(
+      userRepository: _userRepository,
+      authenticationBloc: _authenticationBloc,
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(body: _LoginForm()),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Login'),
+      ),
+      body: LoginForm(
+        authenticationBloc: _authenticationBloc,
+        loginBloc: _loginBloc,
+      ),
     );
   }
-}
-
-class _LoginForm extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State {
-  final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text('Введите номер телефона и код из СМС',
-                      style: TextStyle(fontSize: 18.0)),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: InputDecoration(prefixIcon: Icon(Icons.phone)),
-                    keyboardType: TextInputType.number,
-                    validator: _phoneFieldValidate,
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    validator: _codeFieldValidate,
-                  ),
-                  SizedBox(height: 100.0),
-                  SizedBox(
-                      width: double.infinity,
-                      height: 60.0,
-                      child: RaisedButton(
-                        child: Text(
-                          'Подтвердить',
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        onPressed: _submitButtonClick,
-                      ))
-                ])));
-  }
-
-  _submitButtonClick() {
-    if (_formKey.currentState.validate())
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Форма успешно заполнена'),
-        backgroundColor: Colors.green,
-      ));
-  }
-
-  String _phoneFieldValidate(String value) {
-    if (value.isEmpty) return 'Введите номер телефона';
-    return null;
-  }
-
-  String _codeFieldValidate(String value) {
-    return null;
+  void dispose() {
+    _loginBloc.dispose();
+    super.dispose();
   }
 }
