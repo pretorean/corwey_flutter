@@ -1,6 +1,10 @@
+import 'package:corwey_flutter/SmsRuProvider.dart';
 import 'package:meta/meta.dart';
 
 class UserRepository {
+
+  final _smsProvider = SmsRuProvider();
+
   Future<String> authenticate({
     @required String username,
     @required String password,
