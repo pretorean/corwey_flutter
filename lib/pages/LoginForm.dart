@@ -1,7 +1,7 @@
-import 'package:corwey_flutter/AuthenticationBloc.dart';
-import 'package:corwey_flutter/LoginBloc.dart';
-import 'package:corwey_flutter/LoginEvents.dart';
-import 'package:corwey_flutter/LoginStates.dart';
+import 'package:corwey_flutter/bloc/AuthenticationBloc.dart';
+import 'package:corwey_flutter/bloc/LoginBloc.dart';
+import 'package:corwey_flutter/events/LoginEvents.dart';
+import 'package:corwey_flutter/states/LoginStates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,27 +45,31 @@ class _LoginFormState extends State<LoginForm> {
         }
 
         return Form(
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(labelText: 'username'),
-                controller: _usernameController,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'password'),
-                controller: _passwordController,
-                obscureText: true,
-              ),
-              RaisedButton(
-                onPressed:
-                    state is! LoginLoading ? _onLoginButtonPressed : null,
-                child: Text('Login'),
-              ),
-              Container(
-                child:
-                    state is LoginLoading ? CircularProgressIndicator() : null,
-              ),
-            ],
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'username'),
+                  controller: _usernameController,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'password'),
+                  controller: _passwordController,
+                  obscureText: true,
+                ),
+                RaisedButton(
+                  onPressed:
+                      state is! LoginLoading ? _onLoginButtonPressed : null,
+                  child: Text('Login'),
+                ),
+                Container(
+                  child: state is LoginLoading
+                      ? CircularProgressIndicator()
+                      : null,
+                ),
+              ],
+            ),
           ),
         );
       },

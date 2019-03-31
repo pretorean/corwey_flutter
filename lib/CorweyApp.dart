@@ -1,11 +1,11 @@
-import 'package:corwey_flutter/AuthenticationBloc.dart';
-import 'package:corwey_flutter/AuthenticationEvents.dart';
-import 'package:corwey_flutter/AuthenticationStates.dart';
-import 'package:corwey_flutter/LoadingIndicator.dart';
-import 'package:corwey_flutter/LoginPage.dart';
-import 'package:corwey_flutter/MainPage.dart';
-import 'package:corwey_flutter/SplashPage.dart';
 import 'package:corwey_flutter/UserRepository.dart';
+import 'package:corwey_flutter/bloc/AuthenticationBloc.dart';
+import 'package:corwey_flutter/events/AuthenticationEvents.dart';
+import 'package:corwey_flutter/pages/LoadingIndicator.dart';
+import 'package:corwey_flutter/pages/LoginPage.dart';
+import 'package:corwey_flutter/pages/MainPage.dart';
+import 'package:corwey_flutter/pages/SplashPage.dart';
+import 'package:corwey_flutter/states/AuthenticationStates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:corwey_flutter/AuthenticationEvents.dart';
-import 'package:corwey_flutter/AuthenticationStates.dart';
 import 'package:corwey_flutter/UserRepository.dart';
+import 'package:corwey_flutter/events/AuthenticationEvents.dart';
+import 'package:corwey_flutter/states/AuthenticationStates.dart';
 import 'package:meta/meta.dart';
 
 class AuthenticationBloc

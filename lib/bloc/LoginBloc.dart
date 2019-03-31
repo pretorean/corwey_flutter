@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:corwey_flutter/AuthenticationBloc.dart';
-import 'package:corwey_flutter/AuthenticationEvents.dart';
-import 'package:corwey_flutter/LoginEvents.dart';
-import 'package:corwey_flutter/LoginStates.dart';
 import 'package:corwey_flutter/UserRepository.dart';
+import 'package:corwey_flutter/bloc/AuthenticationBloc.dart';
+import 'package:corwey_flutter/events/AuthenticationEvents.dart';
+import 'package:corwey_flutter/events/LoginEvents.dart';
+import 'package:corwey_flutter/states/LoginStates.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 

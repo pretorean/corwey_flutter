@@ -1,7 +1,7 @@
-import 'package:corwey_flutter/AuthenticationBloc.dart';
-import 'package:corwey_flutter/LoginBloc.dart';
-import 'package:corwey_flutter/LoginForm.dart';
 import 'package:corwey_flutter/UserRepository.dart';
+import 'package:corwey_flutter/bloc/AuthenticationBloc.dart';
+import 'package:corwey_flutter/bloc/LoginBloc.dart';
+import 'package:corwey_flutter/pages/LoginForm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
