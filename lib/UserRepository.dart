@@ -2,8 +2,11 @@ import 'package:corwey_flutter/SmsRuProvider.dart';
 import 'package:meta/meta.dart';
 
 class UserRepository {
-
   final _smsProvider = SmsRuProvider();
+
+  Future<String> sendVerificationSMS({@required String phone}) async {
+    return _smsProvider.sendMessage(phone: phone);
+  }
 
   Future<String> authenticate({
     @required String username,

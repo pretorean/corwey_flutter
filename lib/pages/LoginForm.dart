@@ -4,6 +4,7 @@ import 'package:corwey_flutter/events/LoginEvents.dart';
 import 'package:corwey_flutter/states/LoginStates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:regexed_validator/regexed_validator.dart';
 
 class LoginForm extends StatefulWidget {
   final LoginBloc loginBloc;
@@ -22,6 +23,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   LoginBloc get _loginBloc => widget.loginBloc;
 
@@ -44,6 +46,8 @@ class _LoginFormState extends State<LoginForm> {
           });
         }
 
+        if (state is LoginGetPhoneNumber) return _phoneNumberWidgets();
+
         return Form(
           child: Padding(
             padding: EdgeInsets.all(20.0),
@@ -59,8 +63,7 @@ class _LoginFormState extends State<LoginForm> {
                   obscureText: true,
                 ),
                 RaisedButton(
-                  onPressed:
-                      state is! LoginLoading ? _onLoginButtonPressed : null,
+                  onPressed: () {},
                   child: Text('Login'),
                 ),
                 Container(
@@ -90,7 +93,6 @@ class _LoginFormState extends State<LoginForm> {
                   TextFormField(
                     decoration: InputDecoration(prefixIcon: Icon(Icons.phone)),
                     keyboardType: TextInputType.number,
-                    validator: _phoneFieldValidate,
                   ),
                   SizedBox(height: 20.0),
                   TextFormField(
@@ -121,11 +123,6 @@ class _LoginFormState extends State<LoginForm> {
     ));
   }
 
-  String _phoneFieldValidate(String value) {
-    if (value.isEmpty) return 'Введите номер телефона';
-    return null;
-  }
-
   String _codeFieldValidate(String value) {
     return null;
   }
@@ -136,10 +133,53 @@ class _LoginFormState extends State<LoginForm> {
     });
   }
 
-  _onLoginButtonPressed() {
-    _loginBloc.dispatch(LoginButtonPressed(
-      username: _usernameController.text,
-      password: _passwordController.text,
-    ));
+//  _onLoginButtonPressed() {
+//    _loginBloc.dispatch(LoginButtonPressed(
+//      username: _usernameController.text,
+//      password: _passwordController.text,
+//    ));
+//  }
+
+  Widget _phoneNumberWidgets() {
+    return Form(
+      child: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text('Введите номер телефона',
+                    style: TextStyle(fontSize: 18.0)),
+                SizedBox(height: 20.0),
+                TextFormField(
+                  decoration: InputDecoration(prefixIcon: Icon(Icons.phone)),
+                  keyboardType: TextInputType.number,
+                  validator: (value) => validator.phone(value) ? value : null,
+                  controller: _phoneController,
+                ),
+              ],
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 60.0,
+              child: RaisedButton(
+                child: Text(
+                  'Подтвердить',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                color: Theme.of(context).primaryColor,
+                textColor: Colors.white,
+                onPressed: _phoneNumberEntered,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _phoneNumberEntered() {
+    _loginBloc.dispatch(LoginPhoneNumberEntered(phone: _phoneController.text));
   }
 }
