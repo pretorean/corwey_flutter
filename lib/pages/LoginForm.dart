@@ -47,6 +47,7 @@ class _LoginFormState extends State<LoginForm> {
         }
 
         if (state is LoginGetPhoneNumber) return _phoneNumberWidgets();
+        if (state is LoginGetVerifyCode) return _verifyCodeWidgets();
 
         return Form(
           child: Padding(
@@ -155,7 +156,6 @@ class _LoginFormState extends State<LoginForm> {
                 TextFormField(
                   decoration: InputDecoration(prefixIcon: Icon(Icons.phone)),
                   keyboardType: TextInputType.number,
-                  validator: (value) => validator.phone(value) ? value : null,
                   controller: _phoneController,
                 ),
               ],
@@ -180,6 +180,15 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _phoneNumberEntered() {
-    _loginBloc.dispatch(LoginPhoneNumberEntered(phone: _phoneController.text));
+    if (validator.phone(_phoneController.text))
+      _loginBloc
+          .dispatch(LoginPhoneNumberEntered(phone: _phoneController.text));
+    else
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Введите номер телефона'),
+        backgroundColor: Colors.red,
+      ));
   }
+
+  Widget _verifyCodeWidgets() {}
 }
