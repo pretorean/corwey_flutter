@@ -11,20 +11,16 @@ class LoginPhoneNumberEntered extends LoginEvent {
   LoginPhoneNumberEntered({@required this.phone}) : super([phone]);
 
   @override
-  String toString() =>
-      'LoginPhoneNumberEntered { phone: $phone }';
+  String toString() => 'LoginPhoneNumberEntered { phone: $phone }';
 }
 
-class delete_LoginButtonPressed extends LoginEvent {
-  final String username;
-  final String password;
+class LoginVerifyCodeEntered extends LoginEvent {
+  final String phone;
 
-  delete_LoginButtonPressed({
-    @required this.username,
-    @required this.password,
-  }) : super([username, password]);
+  LoginVerifyCodeEntered({@required this.phone}) : super([phone]);
 
   @override
-  String toString() =>
-      'LoginButtonPressed { username: $username, password: $password }';
+  String toString() {
+    return 'LoginVerifyCodeEntered{phone: $phone}';
+  }
 }

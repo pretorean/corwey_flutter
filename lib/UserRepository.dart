@@ -9,8 +9,7 @@ class UserRepository {
   }
 
   Future<String> authenticate({
-    @required String username,
-    @required String password,
+    @required String phone,
   }) async {
     await Future.delayed(Duration(seconds: 1));
     return 'token';

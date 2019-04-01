@@ -13,17 +13,15 @@ class LoginGetPhoneNumber extends LoginState {
 
 // ввод проверочного кода
 class LoginGetVerifyCode extends LoginState {
+  final String phone;
   final String code;
 
-  LoginGetVerifyCode({@required this.code}) : super([code]);
+  LoginGetVerifyCode({@required this.phone, this.code}) : super([phone, code]);
 
   @override
-  String toString() => 'LoginGetVerifyCode { verify code: $code }';
-}
-
-class delete_LoginInitial extends LoginState {
-  @override
-  String toString() => 'LoginInitial';
+  String toString() {
+    return 'LoginGetVerifyCode{phone: $phone, code: $code}';
+  }
 }
 
 // состояние ожидания

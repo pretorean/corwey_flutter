@@ -21,9 +21,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _codeController = TextEditingController();
 
   LoginBloc get _loginBloc => widget.loginBloc;
 
@@ -47,85 +46,13 @@ class _LoginFormState extends State<LoginForm> {
         }
 
         if (state is LoginGetPhoneNumber) return _phoneNumberWidgets();
-        if (state is LoginGetVerifyCode) return _verifyCodeWidgets();
+        if (state is LoginGetVerifyCode) return _verifyCodeWidgets(state);
 
-        return Form(
-          child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'username'),
-                  controller: _usernameController,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'password'),
-                  controller: _passwordController,
-                  obscureText: true,
-                ),
-                RaisedButton(
-                  onPressed: () {},
-                  child: Text('Login'),
-                ),
-                Container(
-                  child: state is LoginLoading
-                      ? CircularProgressIndicator()
-                      : null,
-                ),
-              ],
-            ),
-          ),
+        return Center(
+          child: CircularProgressIndicator(),
         );
       },
     );
-  }
-
-  Widget oldbuild(BuildContext context) {
-    return Form(
-        child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text('Введите номер телефона и код из СМС',
-                      style: TextStyle(fontSize: 18.0)),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: InputDecoration(prefixIcon: Icon(Icons.phone)),
-                    keyboardType: TextInputType.number,
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    validator: _codeFieldValidate,
-                  ),
-                  SizedBox(height: 100.0),
-                  SizedBox(
-                      width: double.infinity,
-                      height: 60.0,
-                      child: RaisedButton(
-                        child: Text(
-                          'Подтвердить',
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        onPressed: _submitButtonClick,
-                      ))
-                ])));
-  }
-
-  _submitButtonClick() {
-    //if (_formKey.currentState.validate())
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text('Форма успешно заполнена'),
-      backgroundColor: Colors.green,
-    ));
-  }
-
-  String _codeFieldValidate(String value) {
-    return null;
   }
 
   void _onWidgetDidBuild(Function callback) {
@@ -133,13 +60,6 @@ class _LoginFormState extends State<LoginForm> {
       callback();
     });
   }
-
-//  _onLoginButtonPressed() {
-//    _loginBloc.dispatch(LoginButtonPressed(
-//      username: _usernameController.text,
-//      password: _passwordController.text,
-//    ));
-//  }
 
   Widget _phoneNumberWidgets() {
     return Form(
@@ -181,8 +101,9 @@ class _LoginFormState extends State<LoginForm> {
 
   void _phoneNumberEntered() {
     if (validator.phone(_phoneController.text))
-      _loginBloc
-          .dispatch(LoginPhoneNumberEntered(phone: _phoneController.text));
+      _loginBloc.dispatch(
+        LoginPhoneNumberEntered(phone: _phoneController.text),
+      );
     else
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Введите номер телефона'),
@@ -190,5 +111,53 @@ class _LoginFormState extends State<LoginForm> {
       ));
   }
 
-  Widget _verifyCodeWidgets() {}
+  Widget _verifyCodeWidgets(LoginGetVerifyCode state) {
+    return Form(
+      child: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text('Введите код из СМС', style: TextStyle(fontSize: 18.0)),
+                SizedBox(height: 20.0),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: _codeController,
+                ),
+              ],
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 60.0,
+              child: RaisedButton(
+                child: Text(
+                  'Подтвердить',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                color: Theme.of(context).primaryColor,
+                textColor: Colors.white,
+                onPressed: () {
+                  _verifyCodeEntered(state);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _verifyCodeEntered(LoginGetVerifyCode state) {
+    if (state.code == _codeController.text)
+      _loginBloc.dispatch(
+        LoginVerifyCodeEntered(phone: _phoneController.text),
+      );
+    else
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Введенный код не верен'),
+        backgroundColor: Colors.red,
+      ));
+  }
 }
