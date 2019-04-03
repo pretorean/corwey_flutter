@@ -4,6 +4,7 @@ import 'package:corwey_flutter/events/AuthenticationEvents.dart';
 import 'package:corwey_flutter/pages/LoadingIndicator.dart';
 import 'package:corwey_flutter/pages/LoginPage.dart';
 import 'package:corwey_flutter/pages/MainPage.dart';
+import 'package:corwey_flutter/pages/NotFoundPage.dart';
 import 'package:corwey_flutter/pages/SplashPage.dart';
 import 'package:corwey_flutter/states/AuthenticationStates.dart';
 import 'package:flutter/material.dart';
@@ -37,34 +38,50 @@ class _CorweyAppState extends State<CorweyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthenticationBloc>(
+    return BlocProvider(
       bloc: _authenticationBloc,
-      child: MaterialApp(
-        title: "Corwey Application",
-        theme: ThemeData(
-            brightness: Brightness.light,
-            primarySwatch: Colors.blue,
-            fontFamily: "Montserrat"),
-        debugShowCheckedModeBanner: false,
-        home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
-            bloc: _authenticationBloc, builder: _builderFunction),
-      ),
+      child: BlocBuilder<AuthenticationEvent, AuthenticationState>(
+          bloc: _authenticationBloc, builder: _builderFunction),
     );
   }
 
   Widget _builderFunction(BuildContext context, AuthenticationState state) {
-    if (state is AuthenticationUninitialized) {
-      return SplashPage();
-    }
+    return MaterialApp(
+      title: "Corwey Application",
+      theme: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.blue,
+          fontFamily: "Montserrat"),
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: (RouteSettings settings) {
+        return _generateRoute(settings, state);
+      },
+      onUnknownRoute: _unknownRoute,
+    );
+  }
+
+  Route _generateRoute(RouteSettings settings, AuthenticationState state) {
     if (state is AuthenticationAuthenticated) {
-      return MainPage();
+      switch (settings.name) {
+        case '/':
+          return MaterialPageRoute(builder: (context) => MainPage());
+      }
     }
+
+    if (state is AuthenticationUninitialized) {
+      return MaterialPageRoute(builder: (context) => SplashPage());
+    }
+
     if (state is AuthenticationUnauthenticated) {
-      return LoginPage(userRepository: _userRepository);
+      return MaterialPageRoute(
+          builder: (context) => LoginPage(userRepository: _userRepository));
     }
     if (state is AuthenticationLoading) {
-      return LoadingIndicator();
+      return MaterialPageRoute(builder: (context) => LoadingIndicator());
     }
-    return null;
+  }
+
+  Route _unknownRoute(RouteSettings settings) {
+    return MaterialPageRoute(builder: (context) => PageNotFound());
   }
 }
