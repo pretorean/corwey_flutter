@@ -3,12 +3,13 @@ import 'package:corwey_flutter/events/AuthenticationEvents.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class MainPage extends StatelessWidget {
+  static const String routeName = '/home';
+
   @override
   Widget build(BuildContext context) {
     final AuthenticationBloc authenticationBloc =
-    BlocProvider.of<AuthenticationBloc>(context);
+        BlocProvider.of<AuthenticationBloc>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -17,11 +18,11 @@ class MainPage extends StatelessWidget {
       body: Container(
         child: Center(
             child: RaisedButton(
-              child: Text('logout'),
-              onPressed: () {
-                authenticationBloc.dispatch(LoggedOut());
-              },
-            )),
+          child: Text('logout'),
+          onPressed: () {
+            authenticationBloc.dispatch(LoggedOut());
+          },
+        )),
       ),
     );
   }

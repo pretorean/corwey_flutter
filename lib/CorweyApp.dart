@@ -53,6 +53,7 @@ class _CorweyAppState extends State<CorweyApp> {
           primarySwatch: Colors.blue,
           fontFamily: "Montserrat"),
       debugShowCheckedModeBanner: false,
+      initialRoute: LoginPage.routeName,
       onGenerateRoute: (RouteSettings settings) {
         return _generateRoute(settings, state);
       },
@@ -61,6 +62,11 @@ class _CorweyAppState extends State<CorweyApp> {
   }
 
   Route _generateRoute(RouteSettings settings, AuthenticationState state) {
+    switch (settings.name) {
+      case MainPage.routeName:
+        return MaterialPageRoute(builder: (context) => MainPage());
+    }
+
     if (state is AuthenticationAuthenticated) {
       switch (settings.name) {
         case '/':
