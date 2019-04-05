@@ -1,10 +1,13 @@
 import 'package:corwey_flutter/UserRepository.dart';
+import 'package:corwey_flutter/bloc/LoginBloc.dart';
+import 'package:corwey_flutter/events/LoginEvents.dart';
 import 'package:corwey_flutter/pages/LoginPage.dart';
 import 'package:corwey_flutter/pages/MainPage.dart';
 import 'package:corwey_flutter/pages/NotFoundPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CorweyApp extends StatelessWidget {
+class CorweyApp extends StatefulWidget {
   final UserRepository userRepository;
 
   CorweyApp({
@@ -13,100 +16,53 @@ class CorweyApp extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Corwey Application",
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.blue,
-          fontFamily: "Montserrat"),
-      debugShowCheckedModeBanner: false,
-      initialRoute: LoginPage.routeName,
-      routes: {
-        LoginPage.routeName: (context) =>
-            LoginPage(userRepository: userRepository),
-        MainPage.routeName: (context) => MainPage(),
-      },
-      onUnknownRoute: _unknownRoute,
-    );
-  }
-
-  Route _unknownRoute(RouteSettings settings) {
-    return MaterialPageRoute(builder: (context) => PageNotFound());
-  }
+  State<CorweyApp> createState() => _CorweyAppState();
 }
 
-class CorweyAppOld extends StatefulWidget {
-  final UserRepository userRepository;
+class _CorweyAppState extends State<CorweyApp> {
+  LoginBloc _loginBloc;
 
-  CorweyAppOld({Key key, @required this.userRepository}) : super(key: key);
-
-  @override
-  State<CorweyAppOld> createState() => _CorweyAppOldState();
-}
-
-class _CorweyAppOldState extends State<CorweyAppOld> {
   UserRepository get _userRepository => widget.userRepository;
 
   @override
   void initState() {
+    _loginBloc = LoginBloc(userRepository: _userRepository);
+    _loginBloc.dispatch(AppStarted());
     super.initState();
   }
 
   @override
   void dispose() {
+    _loginBloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _builderFunction(context);
-  }
-
-  Widget _builderFunction(BuildContext context) {
-    return MaterialApp(
-      title: "Corwey Application",
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.blue,
-          fontFamily: "Montserrat"),
-      debugShowCheckedModeBanner: false,
-      initialRoute: LoginPage.routeName,
-      routes: {
-        LoginPage.routeName: (context) =>
-            LoginPage(userRepository: _userRepository)
-      },
-      onGenerateRoute: _generateRoute,
+    // Во всех дочерних элементах можно получить bloc через
+    // вызов loginBloc = BlocProvider.of<LoginBloc>(context);
+    return BlocProvider<LoginBloc>(
+      bloc: _loginBloc,
+      child: MaterialApp(
+        title: "Corwey Application",
+        theme: ThemeData(
+            brightness: Brightness.light,
+            primarySwatch: Colors.blue,
+            fontFamily: "Montserrat"),
+        debugShowCheckedModeBanner: false,
+        initialRoute: LoginPage.routeName,
+        routes: {
+          LoginPage.routeName: (context) => LoginPage(
+                loginBloc: _loginBloc,
+              ),
+          MainPage.routeName: (context) => MainPage(),
+        },
+        onUnknownRoute: _unknownRoute,
+      ),
     );
   }
 
-  Route _generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case MainPage.routeName:
-        return MaterialPageRoute(builder: (context) => MainPage());
-      case LoginPage.routeName:
-        return MaterialPageRoute(
-            builder: (context) => LoginPage(userRepository: _userRepository));
-    }
-
-//    if (state is AuthenticationAuthenticated) {
-//    switch (settings.name) {
-//      case '/':
-//        return MaterialPageRoute(builder: (context) => MainPage());
-//    }
-//    }
-
-//    if (state is AuthenticationUninitialized) {
-//      return MaterialPageRoute(builder: (context) => SplashPage());
-//    }
-
-//    if (state is AuthenticationUnauthenticated) {
-//      return MaterialPageRoute(
-//          builder: (context) => LoginPage(userRepository: _userRepository));
-//    }
-//    if (state is AuthenticationLoading) {
-//      return MaterialPageRoute(builder: (context) => LoadingIndicator());
-//    }
-    return null;
+  Route _unknownRoute(RouteSettings settings) {
+    return MaterialPageRoute(builder: (context) => PageNotFound());
   }
 }

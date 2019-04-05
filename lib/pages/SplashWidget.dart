@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
