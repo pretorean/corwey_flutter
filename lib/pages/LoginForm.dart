@@ -1,4 +1,3 @@
-import 'package:corwey_flutter/bloc/AuthenticationBloc.dart';
 import 'package:corwey_flutter/bloc/LoginBloc.dart';
 import 'package:corwey_flutter/events/LoginEvents.dart';
 import 'package:corwey_flutter/states/LoginStates.dart';
@@ -8,12 +7,10 @@ import 'package:regexed_validator/regexed_validator.dart';
 
 class LoginForm extends StatefulWidget {
   final LoginBloc loginBloc;
-  final AuthenticationBloc authenticationBloc;
 
   LoginForm({
     Key key,
     @required this.loginBloc,
-    @required this.authenticationBloc,
   }) : super(key: key);
 
   @override

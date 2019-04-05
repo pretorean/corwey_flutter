@@ -5,6 +5,12 @@ abstract class LoginState extends Equatable {
   LoginState([List props = const []]) : super(props);
 }
 
+// показ заставки
+class LoginSplash extends LoginState {
+  @override
+  String toString() => 'LoginSplash';
+}
+
 // ввод номера телефона
 class LoginGetPhoneNumber extends LoginState {
   @override
@@ -22,6 +28,12 @@ class LoginGetVerifyCode extends LoginState {
   String toString() {
     return 'LoginGetVerifyCode{phone: $phone, code: $code}';
   }
+}
+
+// вход выполнен
+class LoginAuthenticated extends LoginState {
+  @override
+  String toString() => 'AuthenticationAuthenticated';
 }
 
 // состояние ожидания

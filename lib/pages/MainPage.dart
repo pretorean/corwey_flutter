@@ -1,5 +1,5 @@
-import 'package:corwey_flutter/bloc/AuthenticationBloc.dart';
-import 'package:corwey_flutter/events/AuthenticationEvents.dart';
+import 'package:corwey_flutter/bloc/LoginBloc.dart';
+import 'package:corwey_flutter/events/LoginEvents.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,8 +8,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthenticationBloc authenticationBloc =
-        BlocProvider.of<AuthenticationBloc>(context);
+    final LoginBloc authenticationBloc =
+        BlocProvider.of<LoginBloc>(context);
 
     return Scaffold(
       appBar: AppBar(

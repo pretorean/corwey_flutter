@@ -1,5 +1,4 @@
 import 'package:corwey_flutter/UserRepository.dart';
-import 'package:corwey_flutter/bloc/AuthenticationBloc.dart';
 import 'package:corwey_flutter/bloc/LoginBloc.dart';
 import 'package:corwey_flutter/pages/LoginForm.dart';
 import 'package:flutter/material.dart';
@@ -20,17 +19,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   LoginBloc _loginBloc;
-  AuthenticationBloc _authenticationBloc;
 
   UserRepository get _userRepository => widget.userRepository;
 
   @override
   void initState() {
-    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
-    _loginBloc = LoginBloc(
-      userRepository: _userRepository,
-      authenticationBloc: _authenticationBloc,
-    );
+    _loginBloc = LoginBloc(userRepository: _userRepository);
     super.initState();
   }
 
@@ -39,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         body: SafeArea(
             child: LoginForm(
-      authenticationBloc: _authenticationBloc,
       loginBloc: _loginBloc,
     )));
   }
