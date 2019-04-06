@@ -12,7 +12,9 @@ class _PageNotFoundState extends State<PageNotFound> {
       appBar: AppBar(
         title: Text("Empty page"),
       ),
-      body: Text("Empty"),
+      body: Center(
+        child: Text("Empty"),
+      ),
     );
   }
 }
