@@ -14,7 +14,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }) : assert(userRepository != null);
 
   @override
-  LoginState get initialState => LoginGetPhoneNumber();
+  LoginState get initialState => LoginSplash();
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
@@ -48,23 +48,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final token = await userRepository.authenticate(
           phone: event.phone,
         );
-        //authenticationBloc.dispatch(LoggedIn(token: token));
+        this.dispatch(LoggedIn(token: token));
         yield LoginLoading();
       } catch (error) {
         yield LoginFailure(error: error.toString());
       }
     }
 
-//    if (event is LoggedIn) {
-//      yield AuthenticationLoading();
-//      await userRepository.persistToken(event.token);
-//      yield AuthenticationAuthenticated();
-//    }
-//
-//    if (event is LoggedOut) {
-//      yield AuthenticationLoading();
-//      await userRepository.deleteToken();
-//      yield AuthenticationUnauthenticated();
-//    }
+    if (event is LoggedIn) {
+      yield LoginLoading();
+      await userRepository.persistToken(event.token);
+      yield LoginAuthenticated();
+    }
+
+    if (event is LoggedOut) {
+      yield LoginLoading();
+      await userRepository.deleteToken();
+      yield LoginGetPhoneNumber();
+    }
   }
 }

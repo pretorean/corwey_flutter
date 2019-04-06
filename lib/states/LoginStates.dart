@@ -33,7 +33,7 @@ class LoginGetVerifyCode extends LoginState {
 // вход выполнен
 class LoginAuthenticated extends LoginState {
   @override
-  String toString() => 'AuthenticationAuthenticated';
+  String toString() => 'LoginAuthenticated';
 }
 
 // состояние ожидания

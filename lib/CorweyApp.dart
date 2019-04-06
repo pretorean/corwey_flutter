@@ -51,12 +51,7 @@ class _CorweyAppState extends State<CorweyApp> {
             fontFamily: "Montserrat"),
         debugShowCheckedModeBanner: false,
         initialRoute: LoginPage.routeName,
-        routes: {
-          LoginPage.routeName: (context) => LoginPage(
-                loginBloc: _loginBloc,
-              ),
-          MainPage.routeName: (context) => MainPage(),
-        },
+        onGenerateRoute: _generateRoute,
         onUnknownRoute: _unknownRoute,
       ),
     );
@@ -64,5 +59,18 @@ class _CorweyAppState extends State<CorweyApp> {
 
   Route _unknownRoute(RouteSettings settings) {
     return MaterialPageRoute(builder: (context) => PageNotFound());
+  }
+
+  Route _generateRoute(RouteSettings settings) {
+    print('generateRoute: ' + settings.name);
+    switch (settings.name) {
+      case LoginPage.routeName:
+        return MaterialPageRoute(
+            builder: (context) => LoginPage(loginBloc: _loginBloc));
+      case MainPage.routeName:
+        return MaterialPageRoute(builder: (context) => MainPage());
+      default:
+        return _unknownRoute(settings);
+    }
   }
 }
