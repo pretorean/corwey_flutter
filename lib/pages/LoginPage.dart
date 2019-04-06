@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 
 class LoginPage extends StatefulWidget {
-  static const String routeName = '/login';
+  static const String routeName = 'login';
 
   final LoginBloc loginBloc;
 
