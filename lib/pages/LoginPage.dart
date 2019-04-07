@@ -30,16 +30,6 @@ class _LoginPageState extends State<LoginPage> {
   LoginBloc get _loginBloc => widget.loginBloc;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -59,6 +49,9 @@ class _LoginPageState extends State<LoginPage> {
     // показ форм ввода
     if (state is LoginGetPhoneNumber) return _phoneNumberWidgets();
     if (state is LoginGetVerifyCode) return _verifyCodeWidgets(state);
+
+    // показ выбора роли
+    if (state is LoginSelectRole) return _selectRoleWidgets();
 
     // переход на главное окно
     if (state is LoginAuthenticated)
@@ -190,5 +183,69 @@ class _LoginPageState extends State<LoginPage> {
         content: Text('Введенный код не верен'),
         backgroundColor: Colors.red,
       ));
+  }
+
+  Widget _selectRoleWidgets() {
+    return Padding(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Image(
+            height: 180.0,
+            image: AssetImage('assets/images/select_role_head.png'),
+          ),
+          Container(
+            height: 80.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.purple,
+              borderRadius: new BorderRadius.all(new Radius.circular(40.0)),
+            ),
+            child: Center(
+              child: Text(
+                'Выберите кто Вы?',
+                style: TextStyle(
+                  fontSize: 22.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 20.0),
+          SizedBox(
+            height: 80.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  child: RaisedButton(
+                    child: Text(
+                      'Арендатор',
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
+                    onPressed: () {},
+                  ),
+                ),
+                Expanded(
+                  child: RaisedButton(
+                    child: Text(
+                      'Собственник',
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                    color: Colors.deepOrange,
+                    textColor: Colors.black,
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

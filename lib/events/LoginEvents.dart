@@ -1,3 +1,4 @@
+import 'package:corwey_flutter/UserRepository.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
@@ -15,7 +16,9 @@ class AppStarted extends LoginEvent {
 class LoginPhoneNumberEntered extends LoginEvent {
   final String phone;
 
-  LoginPhoneNumberEntered({@required this.phone}) : super([phone]);
+  LoginPhoneNumberEntered({
+    @required this.phone,
+  }) : super([phone]);
 
   @override
   String toString() => 'LoginPhoneNumberEntered { phone: $phone }';
@@ -25,19 +28,35 @@ class LoginPhoneNumberEntered extends LoginEvent {
 class LoginVerifyCodeEntered extends LoginEvent {
   final String phone;
 
-  LoginVerifyCodeEntered({@required this.phone}) : super([phone]);
+  LoginVerifyCodeEntered({
+    @required this.phone,
+  }) : super([phone]);
 
   @override
-  String toString() {
-    return 'LoginVerifyCodeEntered{phone: $phone}';
-  }
+  String toString() => 'LoginVerifyCodeEntered { phone: $phone }';
+}
+
+// событие выбора роли
+class LoginRoleSelected extends LoginEvent {
+  final UserRole userRole;
+  final String phone;
+
+  LoginRoleSelected({
+    @required this.userRole,
+    @required this.phone,
+  }) : super([userRole]);
+
+  @override
+  String toString() => 'LoginRoleSelected { phone: $phone, role: $userRole }';
 }
 
 // событие входа в систему
 class LoggedIn extends LoginEvent {
   final String token;
 
-  LoggedIn({@required this.token}) : super([token]);
+  LoggedIn({
+    @required this.token,
+  }) : super([token]);
 
   @override
   String toString() => 'LoggedIn { token: $token }';

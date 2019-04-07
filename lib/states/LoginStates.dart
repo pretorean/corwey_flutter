@@ -22,11 +22,27 @@ class LoginGetVerifyCode extends LoginState {
   final String phone;
   final String code;
 
-  LoginGetVerifyCode({@required this.phone, this.code}) : super([phone, code]);
+  LoginGetVerifyCode({
+    @required this.phone,
+    @required this.code,
+  }) : super([phone, code]);
 
   @override
   String toString() {
-    return 'LoginGetVerifyCode{phone: $phone, code: $code}';
+    return 'LoginGetVerifyCode { phone: $phone, code: $code }';
+  }
+}
+
+class LoginSelectRole extends LoginState {
+  final String phone;
+
+  LoginSelectRole({
+    @required this.phone,
+  }) : super([phone]);
+
+  @override
+  String toString() {
+    return 'LoginSelectRole { phone: $phone }';
   }
 }
 
@@ -46,7 +62,9 @@ class LoginLoading extends LoginState {
 class LoginFailure extends LoginState {
   final String error;
 
-  LoginFailure({@required this.error}) : super([error]);
+  LoginFailure({
+    @required this.error,
+  }) : super([error]);
 
   @override
   String toString() => 'LoginFailure { error: $error }';
