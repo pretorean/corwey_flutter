@@ -1,3 +1,4 @@
+import 'package:corwey_flutter/UserRepository.dart';
 import 'package:corwey_flutter/bloc/LoginBloc.dart';
 import 'package:corwey_flutter/events/LoginEvents.dart';
 import 'package:corwey_flutter/pages/LoadingWidget.dart';
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
     if (state is LoginGetVerifyCode) return _verifyCodeWidgets(state);
 
     // показ выбора роли
-    if (state is LoginSelectRole) return _selectRoleWidgets();
+    if (state is LoginSelectRole) return _selectRoleWidgets(state);
 
     // переход на главное окно
     if (state is LoginAuthenticated)
@@ -185,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
       ));
   }
 
-  Widget _selectRoleWidgets() {
+  Widget _selectRoleWidgets(LoginSelectRole state) {
     return Padding(
       padding: EdgeInsets.all(20.0),
       child: Column(
@@ -227,7 +228,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     color: Theme.of(context).primaryColor,
                     textColor: Colors.white,
-                    onPressed: () {},
+                    onPressed: () {
+                      _userRoleSelectClick(state, UserRole.tenant);
+                    },
                   ),
                 ),
                 Expanded(
@@ -238,7 +241,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     color: Colors.deepOrange,
                     textColor: Colors.black,
-                    onPressed: () {},
+                    onPressed: () {
+                      _userRoleSelectClick(state, UserRole.homeowner);
+                    },
                   ),
                 ),
               ],
@@ -247,5 +252,10 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  void _userRoleSelectClick(LoginSelectRole state, UserRole userRole) {
+    _loginBloc
+        .dispatch(LoginRoleSelected(userRole: userRole, phone: state.phone));
   }
 }
