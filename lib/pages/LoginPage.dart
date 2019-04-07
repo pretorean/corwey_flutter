@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Image(
-            height: 180.0,
+            height: 160.0,
             image: AssetImage('assets/images/select_role_head.png'),
           ),
           Container(
