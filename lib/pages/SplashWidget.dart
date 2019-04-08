@@ -5,7 +5,7 @@ class SplashWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset('assets/images/logo.jpg'),
+        child: Image.asset('assets/images/logo2.jpg'),
       ),
     );
   }
