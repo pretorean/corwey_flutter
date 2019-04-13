@@ -43,8 +43,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     // введен проверочный код
     if (event is LoginVerifyCodeEntered) {
-      // TODO hasUserRole
-      yield LoginSelectRole(phone: event.phone);
+      final hasRole = await userRepository.hasUserRole();
+      if (hasRole) {
+        final userRole = await userRepository.getUserRole();
+        this.dispatch(
+            LoginRoleSelected(userRole: userRole, phone: event.phone));
+      } else
+        yield LoginSelectRole(phone: event.phone);
     }
 
     // выбрана роль
@@ -74,6 +79,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     // выполнен выход
     if (event is LoggedOut) {
       yield LoginLoading();
+      await userRepository.deleteToken();
       await userRepository.deleteToken();
       yield LoginGetPhoneNumber();
     }
