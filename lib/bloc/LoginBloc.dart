@@ -21,11 +21,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     // запуск приложения
     if (event is AppStarted) {
       yield LoginSplash();
-      await Future.delayed(Duration(seconds: 1));
       final bool hasToken = await userRepository.hasToken();
       if (hasToken) {
         yield LoginAuthenticated();
       } else {
+        await Future.delayed(Duration(seconds: 2));
         yield LoginGetPhoneNumber();
       }
     }

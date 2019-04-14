@@ -12,8 +12,8 @@ class UserRepository {
 
   // отправка смс и возврат кода, который отправлен
   Future<String> sendVerificationSMS({@required String phone}) async {
-    return _smsProvider.sendMessageStub(phone: phone);
-    //return _smsProvider.sendMessage(phone: phone);
+    //return _smsProvider.sendMessageStub(phone: phone);
+    return _smsProvider.sendMessage(phone: phone);
   }
 
   Future<String> authenticate({@required String phone}) async {
