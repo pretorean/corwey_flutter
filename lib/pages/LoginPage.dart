@@ -71,13 +71,7 @@ class _LoginPageState extends State<LoginPage> {
         );
       });
 
-    return _buildStub();
-  }
-
-  Center _buildStub() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
+    return Center(child: CircularProgressIndicator());
   }
 
   void _onWidgetDidBuild(Function callback) {
