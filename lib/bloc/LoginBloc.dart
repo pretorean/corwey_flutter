@@ -80,7 +80,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoggedOut) {
       yield LoginLoading();
       await userRepository.deleteToken();
-      await userRepository.deleteToken();
+      await userRepository.deleteUserRole();
       yield LoginGetPhoneNumber();
     }
   }
